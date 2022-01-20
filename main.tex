@@ -190,24 +190,46 @@
   \end{frame}
 
 \section{Tractable Computation}
-  \begin{frame}{Tractable Computation}
+  \begin{frame}{Tractable Computation: General}
     \begin{itemize}
-      \item Adjust algorithms for MAR and MAP queries
-      \item Input units are assumed to provide correct output
-      \item Product units are handled identically in MAR and MAP
-      \item Sum units need a decision
-      \item At the end, backward pass is needed to retrieve modes of input distributions
+      \item<+-> Adjust feed-forward algorithms for MAR and MAP queries
+      \item<+-> At the end, backward pass is needed for modes
+      \item<+-> Assume, input units provide correct output \\[1em]
+      \begin{center}
+        \includegraphics{figures/input-unit.pdf}
+      \end{center}
+      \item<+-> Product units are handled identically in MAR and MAP \\[1em]
+      \begin{minipage}[c]{0.4\textwidth}
+        \begin{mybox}
+          \[
+            r_n \longleftarrow \prod_{c\in\nodein(n)} r_c
+          \]
+        \end{mybox}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[c]{0.45\textwidth}
+        \centering
+        \includegraphics{figures/product-unit.pdf}
+      \end{minipage}
     \end{itemize}
-    \begin{mybox}
-      \[
-        \begin{aligned}[t]
+  \end{frame}
+
+  \begin{frame}{Tractable Computation: Sum Units}
+    \begin{minipage}[c]{0.49\textwidth}
+      \begin{mybox}
+        \begin{align*}
           \mathbf{if}\quad &φ(n) \cap Q \neq \emptyset \quad \mathbf{then} \\
           & r_n \longleftarrow \max_{c\in\nodein(n)} ϑ_{nc}r_c \\
           \mathbf{else} \\
           & r_n \longleftarrow \sum_{c\in\nodein(n)} ϑ_{nc}r_c
-        \end{aligned}
-      \]
-    \end{mybox}
+        \end{align*}
+      \end{mybox}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[c]{0.49\textwidth}
+      \center
+      \includegraphics[scale=1.2]{figures/sum-unit.pdf}
+    \end{minipage}
   \end{frame}
 
 \section{Sufficient Conditions}
@@ -229,52 +251,61 @@
 
   \begin{frame}{Sufficient Conditions: Product Units}
     \begin{itemize}
-      \item Apply decomposability and partition $Z$, $Q$, and $E$
+      \item<+-> Apply decomposability and partition $Z$, $Q$, and $E$
     \end{itemize}
     \begin{align*}
-      \mathscr{Q}(e,\mathscr{I}) &= \max_{q_1,\ldots,q_k\in\val(Q)} \integral{\mathscr{I}}{}{\prod_{i=1}^k\mathscr{C}_i(Z_i,q_i,e_i)}{Z} \\
-      &= \max_{q_1,\ldots,q_k\in\val(Q)} \prod_{i=1}^k \integral{\mathscr{I}}{}{\mathscr{C}_i(Z_i,q_i,e_i)}{Z_i} \\
-      &= \prod_{i=1}^k \max_{q_i\in\val(Q)} \integral{\mathscr{I}_i}{}{\mathscr{C}_i(Z_i,q_i,e_i)}{Z_i} \\
-      &= \prod_{i=1}^k \mathscr{C}_i(e_i,\mathscr{I}_i)
+      \uncover<+->{\mathscr{Q}(e,\mathscr{I}) &= \max_{q_1,\ldots,q_k\in\val(Q)} \integral{\mathscr{I}}{}{\prod_{i=1}^k\mathscr{C}_i(Z_i,q_i,e_i)}{Z} }\\
+      \uncover<+->{&= \max_{q_1,\ldots,q_k\in\val(Q)} \prod_{i=1}^k \integral{\mathscr{I}}{}{\mathscr{C}_i(Z_i,q_i,e_i)}{Z_i} }\\
+      \uncover<+->{&= \prod_{i=1}^k \max_{q_i\in\val(Q)} \integral{\mathscr{I}_i}{}{\mathscr{C}_i(Z_i,q_i,e_i)}{Z_i} }\\
+      \uncover<+->{&= \prod_{i=1}^k \mathscr{C}_i(e_i,\mathscr{I}_i) }
     \end{align*}
   \end{frame}
 
   \begin{frame}{Sufficient Conditions: Sum Units}
     \begin{itemize}
-      \item Sum units with no query variable in their scope reduce to MAR queries which has alread been proven
-      \item So $φ(n)\cap Q \neq \emptyset$
+      \item<+-> Sum units with no query variable in their scope reduce to MAR queries which has alread been proven
+      \item<+-> So $φ(n)\cap Q \neq \emptyset$
     \end{itemize}
     \begin{align*}
-      \mathscr{Q}(e,\mathscr{I}) &= \max_{q\in\val(Q)} \integral{\mathscr{I}}{}{\sum_{i\in\nodein(n)} ϑ_i\mathscr{C}_i(Z,q,e)}{Z} \\
-      &= \max_{q\in\val(Q)} \sum_{i\in\nodein(n)} \integral{\mathscr{I}}{}{ϑ_i\mathscr{C}_i(Z,q,e)}{Z} \\
-      &= \max_{q\in\val(Q)} \max_{i\in\nodein(n)} \integral{\mathscr{I}}{}{ϑ_i\mathscr{C}_i(Z,q,e)}{Z} \\
-      &= \max_{i\in\nodein(n)} ϑ_i \max_{q\in\val(Q)} \integral{\mathscr{I}}{}{\mathscr{C}_i(Z,q,e)}{Z} \\
-      &= \max_{i\in\nodein(n)} ϑ_i \mathscr{Q}_i(e,\mathscr{I})
+      \uncover<+->{\mathscr{Q}(e,\mathscr{I}) &= \max_{q\in\val(Q)} \integral{\mathscr{I}}{}{\sum_{i\in\nodein(n)} ϑ_i\mathscr{C}_i(Z,q,e)}{Z} }\\
+      \uncover<+->{&= \max_{q\in\val(Q)} \sum_{i\in\nodein(n)} \integral{\mathscr{I}}{}{ϑ_i\mathscr{C}_i(Z,q,e)}{Z} }\\
+      \uncover<+->{&= \max_{q\in\val(Q)} \max_{i\in\nodein(n)} \integral{\mathscr{I}}{}{ϑ_i\mathscr{C}_i(Z,q,e)}{Z} }\\
+      \uncover<+->{&= \max_{i\in\nodein(n)} ϑ_i \max_{q\in\val(Q)} \integral{\mathscr{I}}{}{\mathscr{C}_i(Z,q,e)}{Z} }\\
+      \uncover<+->{&= \max_{i\in\nodein(n)} ϑ_i \mathscr{Q}_i(e,\mathscr{I})}
     \end{align*}
   \end{frame}
 
 \section{Conclusions}
   \begin{frame}{Conclusions}
     \begin{itemize}
-      \item MMAP queries are typically be NP-hard
-      \item Complexity depends on set of query variables
-      \item marginal determinism together with smoothness and decomposability seems to be sufficient for tractable computations
-      \item sum units have to compute maxima when support contains query variables
+      \item<+-> MMAP queries are typically be NP-hard
+      \item<+-> Complexity depends on set of query variables
+      \item<+-> marginal determinism together with smoothness and decomposability seems to be sufficient for tractable computations
+      \item<+-> sum units have to compute maxima when support contains query variables
     \end{itemize}
   \end{frame}
 
-  \begin{frame}{Outlook}
-    \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
-      \usebeamerfont{title}%
-      Thank you for Your Attention!%
-      \par%
-    \end{beamercolorbox}
-    \begin{itemize}
-      \item Assuming marginal determinism for all sets of query variables strongly restricts the expressiveness of the probabilistic circuit
-      \item More general approach by using sum-maximizer circuits
-      \item No general algorithm how to generate one
-      \item Tractable computation of information-theoretic measures, such as marginal entropy
-    \end{itemize}
+  \begin{frame}{Conclusions: Outlook}
+    \uncover<5->{%
+      \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+        \usebeamerfont{title}%
+        Thank you for Your Attention!%
+        \par%
+      \end{beamercolorbox}%
+    }%
+    \vspace{1em}
+    \onslide<+->
+    \begin{minipage}[c]{0.49\textwidth}
+      \center
+      \includegraphics[width=\textwidth]{figures/example.pdf}
+    \end{minipage}
+    \begin{minipage}[c]{0.49\textwidth}
+      \begin{itemize}
+        \item<+-> Marginal determinism for all sets of query variables
+        \item<+-> Sum-maximizer circuits (no general algorithm)
+        \item<+-> Tractable computation of information-theoretic measures
+      \end{itemize}
+    \end{minipage}
   \end{frame}
 
 \setcounter{backupcounter}{\value{framenumber}}

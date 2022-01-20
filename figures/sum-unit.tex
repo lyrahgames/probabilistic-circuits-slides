@@ -1,0 +1,42 @@
+\documentclass{standalone}
+\usepackage{times}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning,fit,shapes,calc,decorations.pathreplacing}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{shapes,snakes}
+
+\definecolor{processblue}{cmyk}{1,1,1,0}
+\definecolor{accent}{rgb}{0.0,0.5,0.8}
+\definecolor{accent2}{rgb}{0.8,0.5,0.0}
+
+\begin{document}
+\begin{tikzpicture}[
+  node/.style = {
+    draw,
+    circle,
+    thick,
+    fill = white,
+    minimum width = 0.5cm,
+    minimum height = 0.5cm,
+  },
+  >={Stealth[scale=1.8]},
+]
+
+  \node[node,draw=accent,text=accent] (unit) {$+$};
+  \node (r) [right=of unit] {};
+  \node (i) [above left=of unit] {};
+  \node (j) [below left=of unit] {};
+  \node (k) [left=of unit]{};
+
+  \path[->,thick] (unit) edge[out=0,in=180] node {} (r);
+  \path[-,thick] (i) edge[out=0,in=180] node {} (unit);
+  \path[-,thick] (j) edge[out=0,in=180] node {} (unit);
+  \path[-,thick] (k) edge[out=0,in=180] node {} (unit);
+
+\end{tikzpicture}
+\end{document}
