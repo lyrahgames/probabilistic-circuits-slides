@@ -1,0 +1,142 @@
+\documentclass[aspectratio=169]{beamer}
+\PassOptionsToPackage{english}{babel}
+\usepackage{standardslides}
+
+\usepackage{svg}
+
+\usepackage{tikz}
+\usepackage{pifont}
+\usepackage{listings}
+\usepackage{colortbl}
+\newlength{\listingframemargin}
+\setlength{\listingframemargin}{1em}
+\newlength{\listingmargin}
+\setlength{\listingmargin}{0.08\textwidth}
+
+\definecolor{codeDarkGray}{gray}{0.2}
+\definecolor{codeGray}{gray}{0.4}
+\definecolor{codeLightGray}{rgb}{0.94,0.94,0.91}
+\definecolor{codeBorder}{rgb}{0.34,0.24,0.21}
+\definecolor{MidnightBlue}{rgb}{0.1, 0.1, 0.8}
+
+\lstdefinestyle{standard}{%
+  belowcaptionskip=0.5\baselineskip,
+  breaklines=true,
+  frameround=tttt,
+  % frame=false,
+  xleftmargin=0em,
+  xrightmargin=0em,
+  showstringspaces=false,
+  showtabs=false,
+  % tab=\smash{\rule[-.2\baselineskip]{.4pt}{\baselineskip}\kern.5em},
+  basicstyle= \fontfamily{pcr}\selectfont\tiny\bfseries,
+  keywordstyle= \bfseries\color{MidnightBlue}, %\color{codeDarkGray},
+  commentstyle= \itshape\color{codeGray},
+  identifierstyle=\color{codeDarkGray},
+  stringstyle=\color{BurntOrange}, %\color{codeDarkGray},
+  numberstyle=\tiny\ttfamily,
+  % numbers=left,
+  numbersep = 1em,
+  % stepnumber = 1,
+  % captionpos=t,
+  tabsize=2,
+  % backgroundcolor=\color{codebLightGray},
+  rulecolor=\color{codeBorder},
+  framexleftmargin=\listingframemargin,
+  framexrightmargin=\listingframemargin
+}
+
+\newcommand{\inputCodeBlock}[1]{%
+  % \begin{mybox}
+    \begin{center}
+      % \begin{minipage}[c]{0.7\textwidth}
+        \lstinputlisting[%
+          style = standard,
+          language = c++,
+          morekeywords={constexpr,noexcept,decltype,size_t,uint32_t,uint64_t,__m256i,__m256,__m256d,__m128i,__m128,__m128d}
+        ]{#1}
+      % \end{minipage}
+    \end{center}
+  % \end{mybox}
+}
+
+\def\UrlBigBreaks{\do\/\do-\do:}
+
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{navigation symbols}{}
+
+\title{%
+  Probabilistic Circuits: Marginal Maximum a Posteriori (MMAP) Queries%
+}
+% \subtitle{Master's Thesis Defense and Presentation}
+\author{Markus Pawellek}
+
+\bibliography{references}
+
+\begin{document}
+
+\selectlanguage{english}
+
+\frame[plain]{\titlepage}
+\begin{frame}[plain]{Outline}
+  \footnotesize
+  \hfill\parbox[t][7cm][l]{0.9\textwidth}{\tableofcontents}
+\end{frame}
+\setcounter{framenumber}{0}
+
+\section{Introduction}
+  \begin{frame}{Introduction}
+
+  \end{frame}
+
+\section{Background}
+  \begin{frame}{Background}
+
+  \end{frame}
+
+\section{Marginal Determinism}
+  \begin{frame}{Marginal Determinism}
+
+  \end{frame}
+
+\section{MMAP Algorithm}
+  \begin{frame}{MMAP Algorithm}
+
+  \end{frame}
+
+\section{Correctness}
+  \begin{frame}{Correctness}
+
+  \end{frame}
+
+\section{Conclusions}
+  \begin{frame}{Conclusions}
+
+  \end{frame}
+
+\setcounter{backupcounter}{\value{framenumber}}
+
+\begin{frame}[plain]
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}%
+    Thank you for Your Attention!%
+    \par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}[plain]
+  \frametitle{References}
+  % \tiny
+  % \AtNextBibliography{\tiny}
+  % \begin{multicols}{2}
+    \nocite{*}
+    \printbibliography
+  % \end{multicols}
+\end{frame}
+
+\setcounter{framenumber}{\value{backupcounter}}
+
+\end{document}

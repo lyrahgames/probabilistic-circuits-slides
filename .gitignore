@@ -1,0 +1,16 @@
+*
+!*/
+
+svg-inkscape
+
+!*.tex
+!references.bib
+!*.pdf
+
+!*.cpp
+
+!makefile
+
+!images/**
+
+!.git*
