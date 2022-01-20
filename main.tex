@@ -66,12 +66,16 @@
 \setbeamertemplate{navigation symbols}{}
 
 \title{%
-  Probabilistic Circuits: Marginal Maximum a Posteriori (MMAP) Queries%
+  Probabilistic Circuits: \\ Marginal Maximum a Posteriori Queries%
 }
 % \subtitle{Master's Thesis Defense and Presentation}
 \author{Markus Pawellek}
 
 \bibliography{references}
+
+\DeclareMathOperator*{\argmax}{arg\ max}
+\DeclareMathOperator{\val}{val}
+\DeclareMathOperator{\nodein}{in}
 
 \begin{document}
 
@@ -86,46 +90,194 @@
 
 \section{Introduction}
   \begin{frame}{Introduction}
-
+    \begin{itemize}
+      \item Marginal maximum a posteriori (MMAP) combine marginal (MAR) and maximum a posteriori (MAP) inference
+      \item We need sufficient conditions for tractability
+      \item We use MAR and MAP algorithm
+      \item Notations varies a little bit: no boldface letters
+    \end{itemize}
   \end{frame}
 
 \section{Background}
   \begin{frame}{Background}
+    \begin{align*}
+      X &\ldots \text{finite set of random variables} \\
+      p\, &\ldots \text{joint probability distribution over $X$} \\
+      \mathscr{C}\, &\ldots \text{PC over $X$ with $\mathscr{C}=(\mathscr{G},ϑ)$} \\
+      Q &\ldots \text{set of query variables with $Q\subset X$}
+    \end{align*}
+  \end{frame}
 
+  \begin{frame}{Background: MMAP Queries}
+    \begin{itemize}
+      \item query variables $Q$, evidence variables $E$, marginal variables $Z$ form partition of $X$
+      \item $e\in E$, intevals $\mathscr{I}\subset\val(Z)$
+    \end{itemize}
+    \begin{mybox}
+      \[
+        \argmax_{q\in\val(Q)} \ p\roundBrackets{Q=q \ | \ E=e,Z\in\mathscr{I}}
+      \]
+      \[
+        \argmax_{q\in\val(Q)} \integral{\mathscr{I}}{}{p(q,e,z)}{Z}
+      \]
+    \end{mybox}
+  \end{frame}
+
+  \begin{frame}{Background: MMAP Connection}
+    \begin{mybox}
+      \[
+        \argmax_{q\in\val(Q)} \integral{\mathscr{I}}{}{p(q,e,z)}{Z}
+      \]
+    \end{mybox}
+    \begin{itemize}
+      \item $\mathbf{case}\ Q=\emptyset :\quad $ MAR Query
+      \[
+        \integral{\mathscr{I}}{}{p(e,z)}{Z}
+      \]
+      \item $\mathbf{case}\ Z=\emptyset :\quad $ MAP Query
+      \[
+        \argmax_{q\in\val(Q)}\ p(q,e)
+      \]
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}{Background: Review}
+    \[
+      \begin{aligned}[t]
+        &\text{$\mathscr{C}$ is tractable for MAR queries} \\
+        &\iff \text{$\mathscr{G}$ is decomposable and smooth}
+      \end{aligned}
+    \]
+    \[
+      \begin{aligned}[t]
+        &\text{$\mathscr{C}$ is tractable for MAP queries} \\
+        &\iff \text{$\mathscr{G}$ is consistent and deterministic}
+      \end{aligned}
+    \]
+    \[
+      \text{$\mathscr{G}$ is decomposable} \implies \text{$\mathscr{G}$ is consistent}
+    \]
+    \begin{mybox}
+      \begin{align*}
+        &\text{$\mathscr{C}$ is tractable for both MAR and MAP queries} \\
+        &\iff \text{$\mathscr{G}$ is decomposable, smooth, and deterministic }
+      \end{align*}
+    \end{mybox}
   \end{frame}
 
 \section{Marginal Determinism}
   \begin{frame}{Marginal Determinism}
-
+    \begin{mybox}
+      A sum node is marginal deterministic with respect to $Q$ if for all partial states $q\in Q$ at most one of its inputs is non-zero.
+    \end{mybox}
+    \begin{mybox}
+      A circuit structure $\mathscr{G}$ is marginal deterministic with respect to $Q$ if for all sum units $n\in\mathscr{G}$ with $φ(n)\cap Q\neq\emptyset$, $n$ is marginal deterministic with respect to $Q$.
+    \end{mybox}
+    \begin{itemize}
+      \item Simple generalization of determinism
+      \item Structural property about the support of input units
+      \item Defined with respect to $Q$
+    \end{itemize}
   \end{frame}
 
-\section{MMAP Algorithm}
-  \begin{frame}{MMAP Algorithm}
-
+  \begin{frame}{Marginal Determinism: Example}
+    \center
+    \includegraphics[width=0.9\textwidth]{figures/example.pdf}
+  \end{frame}
+  \begin{frame}{Marginal Determinism: Example}
+    \center
+    \includegraphics[height=0.8\textheight]{figures/big-example.pdf}
   \end{frame}
 
-\section{Correctness}
-  \begin{frame}{Correctness}
+\section{Tractable Computation}
+  \begin{frame}{Tractable Computation}
+    \begin{itemize}
+      \item Adjust algorithms for MAR and MAP queries
+      \item Input units are assumed to provide correct output
+      \item Product units are handled identically in MAR and MAP
+      \item Sum units need a decision
+      \item At the end, backward pass is needed to retrieve modes of input distributions
+    \end{itemize}
+    \begin{mybox}
+      \[
+        \begin{aligned}[t]
+          \mathbf{if}\quad &φ(n) \cap Q \neq \emptyset \quad \mathbf{then} \\
+          & r_n \longleftarrow \max_{c\in\nodein(n)} ϑ_{nc}r_c \\
+          \mathbf{else} \\
+          & r_n \longleftarrow \sum_{c\in\nodein(n)} ϑ_{nc}r_c
+        \end{aligned}
+      \]
+    \end{mybox}
+  \end{frame}
 
+\section{Sufficient Conditions}
+  \begin{frame}{Sufficient Conditions}
+    \begin{mybox}
+      \textbf{Theorem:}
+      Let $\mathscr{G}$ be smooth, decomposable, and $Q$-marginal deterministic.
+      Then for any parameterization $ϑ$ the above algorithm
+      tractably computes MMAP queries of $\mathscr{C}$ over $Q$.
+    \end{mybox}
+    \begin{itemize}
+      \item Proof by induction
+      \item Input units are correct by assumption
+    \end{itemize}
+    \[
+      \mathscr{Q}(e,\mathscr{I}) = \max_{q\in\val(Q)} \integral{\mathscr{I}}{}{\mathscr{C}(Z,q,e)}{Z}
+    \]
+  \end{frame}
+
+  \begin{frame}{Sufficient Conditions: Product Units}
+    \begin{itemize}
+      \item Apply decomposability and partition $Z$, $Q$, and $E$
+    \end{itemize}
+    \begin{align*}
+      \mathscr{Q}(e,\mathscr{I}) &= \max_{q_1,\ldots,q_k\in\val(Q)} \integral{\mathscr{I}}{}{\prod_{i=1}^k\mathscr{C}_i(Z_i,q_i,e_i)}{Z} \\
+      &= \max_{q_1,\ldots,q_k\in\val(Q)} \prod_{i=1}^k \integral{\mathscr{I}}{}{\mathscr{C}_i(Z_i,q_i,e_i)}{Z_i} \\
+      &= \prod_{i=1}^k \max_{q_i\in\val(Q)} \integral{\mathscr{I}_i}{}{\mathscr{C}_i(Z_i,q_i,e_i)}{Z_i} \\
+      &= \prod_{i=1}^k \mathscr{C}_i(e_i,\mathscr{I}_i)
+    \end{align*}
+  \end{frame}
+
+  \begin{frame}{Sufficient Conditions: Sum Units}
+    \begin{itemize}
+      \item Sum units with no query variable in their scope reduce to MAR queries which has alread been proven
+      \item So $φ(n)\cap Q \neq \emptyset$
+    \end{itemize}
+    \begin{align*}
+      \mathscr{Q}(e,\mathscr{I}) &= \max_{q\in\val(Q)} \integral{\mathscr{I}}{}{\sum_{i\in\nodein(n)} ϑ_i\mathscr{C}_i(Z,q,e)}{Z} \\
+      &= \max_{q\in\val(Q)} \sum_{i\in\nodein(n)} \integral{\mathscr{I}}{}{ϑ_i\mathscr{C}_i(Z,q,e)}{Z} \\
+      &= \max_{q\in\val(Q)} \max_{i\in\nodein(n)} \integral{\mathscr{I}}{}{ϑ_i\mathscr{C}_i(Z,q,e)}{Z} \\
+      &= \max_{i\in\nodein(n)} ϑ_i \max_{q\in\val(Q)} \integral{\mathscr{I}}{}{\mathscr{C}_i(Z,q,e)}{Z} \\
+      &= \max_{i\in\nodein(n)} ϑ_i \mathscr{Q}_i(e,\mathscr{I})
+    \end{align*}
   \end{frame}
 
 \section{Conclusions}
   \begin{frame}{Conclusions}
+    \begin{itemize}
+      \item MMAP queries are typically be NP-hard
+      \item Complexity depends on set of query variables
+      \item marginal determinism together with smoothness and decomposability seems to be sufficient for tractable computations
+      \item sum units have to compute maxima when support contains query variables
+    \end{itemize}
+  \end{frame}
 
+  \begin{frame}{Outlook}
+    \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+      \usebeamerfont{title}%
+      Thank you for Your Attention!%
+      \par%
+    \end{beamercolorbox}
+    \begin{itemize}
+      \item Assuming marginal determinism for all sets of query variables strongly restricts the expressiveness of the probabilistic circuit
+      \item More general approach by using sum-maximizer circuits
+      \item No general algorithm how to generate one
+      \item Tractable computation of information-theoretic measures, such as marginal entropy
+    \end{itemize}
   \end{frame}
 
 \setcounter{backupcounter}{\value{framenumber}}
-
-\begin{frame}[plain]
-  \vfill
-  \centering
-  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
-    \usebeamerfont{title}%
-    Thank you for Your Attention!%
-    \par%
-  \end{beamercolorbox}
-  \vfill
-\end{frame}
 
 \begin{frame}[plain]
   \frametitle{References}
