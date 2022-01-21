@@ -217,7 +217,7 @@
         &\text{$\quad:\iff$}
         \begin{aligned}[t]
           &\text{for all sum units $n\in\mathscr{G}$ with $φ(n)\cap Q\neq\emptyset$,} \\
-          &\text{$n$ is marginal deterministic with respect to $Q$}
+          &\text{$n$ is $Q$-marginal deterministic}
         \end{aligned}
       \end{align*}
     \end{mybox}
@@ -313,7 +313,7 @@
         \uncover<+->{\mathscr{Q}(e,\mathscr{I}) &= \max_{q_1,\ldots,q_k\in\val(Q)} \integral{\mathscr{I}}{}{\prod_{i=1}^k\mathscr{C}_i(Z_i,q_i,e_i)}{Z} }\\
         \uncover<+->{&= \max_{q_1,\ldots,q_k\in\val(Q)} \prod_{i=1}^k \integral{\mathscr{I}}{}{\mathscr{C}_i(Z_i,q_i,e_i)}{Z_i} }\\
         \uncover<+->{&= \prod_{i=1}^k \max_{q_i\in\val(Q)} \integral{\mathscr{I}_i}{}{\mathscr{C}_i(Z_i,q_i,e_i)}{Z_i} }\\
-        \uncover<+->{&= \prod_{i=1}^k \mathscr{C}_i(e_i,\mathscr{I}_i) }
+        \uncover<+->{&= \prod_{i=1}^k \mathscr{Q}_i(e_i,\mathscr{I}_i) }
       \end{align*}
     \end{minipage}
     \hfill
