@@ -95,50 +95,57 @@
 \section{Introduction}
   \begin{frame}{Introduction}
     \begin{itemize}
-      \item<+-> Marginal maximum a posteriori (MMAP) combine marginal (MAR) and maximum a posteriori (MAP) inference
-      \item<+-> We need sufficient conditions for tractability
-      \item<+-> We use MAR and MAP algorithm
-      \item<+-> Notations varies a little bit: no boldface letters
+      \item<+-> Marginal maximum a posteriori (MMAP) queries combine marginal (MAR) and maximum a posteriori (MAP) inference \\[1em]
+      \enquote{$\mathit{Which\ combination\ of\ roads\ is\ most\ likely\ to\ be\ jammed\ on\ Monday?}$}\\[1em]
+      \item<+-> Sufficient conditions for tractable computation needed
+      \item<+-> Usage of MAR and MAP algorithms
+      \item<+-> Here, notations varies a little bit: no boldface letters
     \end{itemize}
   \end{frame}
 
 \section{Background}
-  \begin{frame}{Background}
-    \begin{align*}
-      X &\ldots \text{finite set of random variables} \\
-      p\, &\ldots \text{joint probability distribution over $X$} \\
-      \mathscr{C}\, &\ldots \text{PC over $X$ with $\mathscr{C}=(\mathscr{G},ϑ)$} \\
-      Q &\ldots \text{set of query variables with $Q\subset X$}
-    \end{align*}
-  \end{frame}
+  % \begin{frame}{Background}
+  %   \begin{align*}
+  %     X &\ldots \text{finite set of random variables} \\
+  %     p\, &\ldots \text{joint probability distribution over $X$} \\
+  %     \mathscr{C}\, &\ldots \text{PC over $X$ with $\mathscr{C}=(\mathscr{G},ϑ)$} \\
+  %     Q &\ldots \text{set of query variables with $Q\subset X$}
+  %   \end{align*}
+  % \end{frame}
 
   \begin{frame}{Background: MMAP Queries}
     \begin{itemize}
-      \item query variables $Q$, evidence variables $E$, marginal variables $Z$ form partition of $X$
-      \item $e\in E$, intevals $\mathscr{I}\subset\val(Z)$
+      \item<1-> Finite set $X$ of random variables
+      \item<1-> Joint distribution $p$ over $X$
     \end{itemize}
+    \onslide<2->
     \begin{mybox}
       \[
         \argmax_{q\in\val(Q)} \ p\roundBrackets{Q=q \ | \ E=e,Z\in\mathscr{I}}
-      \]
-      \[
-        \argmax_{q\in\val(Q)} \integral{\mathscr{I}}{}{p(q,e,z)}{Z}
+        \uncover<4>{ = \argmax_{q\in\val(Q)} \integral{\mathscr{I}}{}{p(q,e,z)}{Z} }
       \]
     \end{mybox}
+    for
+    \begin{itemize}
+      \item<3-> Partition $\set{Q,E,Z}{}$ of $X$
+      \item<3-> Partial state $e\in E$
+      \item<3-> Generalized interval $\mathscr{I}\subset\val(Z)$
+    \end{itemize}
   \end{frame}
 
-  \begin{frame}{Background: MMAP Connection}
+  \begin{frame}{Background: MAR and MAP}
     \begin{mybox}
       \[
         \argmax_{q\in\val(Q)} \integral{\mathscr{I}}{}{p(q,e,z)}{Z}
       \]
     \end{mybox}
+    \onslide<+->
     \begin{itemize}
-      \item $\mathbf{case}\ Q=\emptyset :\quad $ MAR Query
+      \item<+-> $\mathbf{case}\ Q=\emptyset :\quad $ MAR Query
       \[
         \integral{\mathscr{I}}{}{p(e,z)}{Z}
       \]
-      \item $\mathbf{case}\ Z=\emptyset :\quad $ MAP Query
+      \item<+-> $\mathbf{case}\ Z=\emptyset :\quad $ MAP Query
       \[
         \argmax_{q\in\val(Q)}\ p(q,e)
       \]
@@ -146,21 +153,41 @@
   \end{frame}
 
   \begin{frame}{Background: Review}
-    \[
-      \begin{aligned}[t]
-        &\text{$\mathscr{C}$ is tractable for MAR queries} \\
-        &\iff \text{$\mathscr{G}$ is decomposable and smooth}
-      \end{aligned}
-    \]
-    \[
-      \begin{aligned}[t]
-        &\text{$\mathscr{C}$ is tractable for MAP queries} \\
-        &\iff \text{$\mathscr{G}$ is consistent and deterministic}
-      \end{aligned}
-    \]
-    \[
-      \text{$\mathscr{G}$ is decomposable} \implies \text{$\mathscr{G}$ is consistent}
-    \]
+    \onslide<+->
+    Probabilistic Circuit $\mathscr{C}$ with circuit structure $\mathscr{G}$
+    \onslide<+->
+    \begin{minipage}[c]{0.49\textwidth}
+      \[
+        \begin{aligned}[t]
+          &\text{$\mathscr{C}$ is tractable for MAR queries} \\
+          &\iff
+            \begin{aligned}[t]
+              \text{$\mathscr{G}$ is } &\text{smooth and} \\
+              &\text{decomposable}
+            \end{aligned}
+        \end{aligned}
+      \]
+    \end{minipage}
+    \hfill
+    \begin{minipage}[c]{0.49\textwidth}
+      \[
+        \begin{aligned}[t]
+          &\text{$\mathscr{C}$ is tractable for MAP queries} \\
+          &\iff
+          \begin{aligned}[t]
+            \text{$\mathscr{G}$ is } &\text{deterministic and} \\
+            &\text{consistent}
+          \end{aligned}
+        \end{aligned}
+      \]
+    \end{minipage}
+
+    \bigskip
+    \onslide<+->
+    $\mathscr{G}$ is decomposable $\implies$ $\mathscr{G}$ is consistent
+    \bigskip
+
+    \onslide<+->
     \begin{mybox}
       \begin{align*}
         &\text{$\mathscr{C}$ is tractable for both MAR and MAP queries} \\
@@ -171,17 +198,34 @@
 
 \section{Marginal Determinism}
   \begin{frame}{Marginal Determinism}
+    Simple generalization of determinism
+    \medskip
+    \onslide<+->
     \begin{mybox}
-      A sum node is marginal deterministic with respect to $Q$ if for all partial states $q\in Q$ at most one of its inputs is non-zero.
+      \onslide<+->
+      \begin{align*}
+        &\text{sum unit is $Q$-marginal deterministic} \\
+        &\text{$\quad:\iff$}
+        \begin{aligned}[t]
+          &\text{for all partial states $q\in Q$,} \\
+          &\text{at most one of its inputs is non-zero}
+        \end{aligned}
+      \end{align*}
+      \onslide<+->
+      \begin{align*}
+        &\text{$\mathscr{G}$ is $Q$-marginal deterministic} \\
+        &\text{$\quad:\iff$}
+        \begin{aligned}[t]
+          &\text{for all sum units $n\in\mathscr{G}$ with $φ(n)\cap Q\neq\emptyset$,} \\
+          &\text{$n$ is marginal deterministic with respect to $Q$}
+        \end{aligned}
+      \end{align*}
     \end{mybox}
-    \begin{mybox}
-      A circuit structure $\mathscr{G}$ is marginal deterministic with respect to $Q$ if for all sum units $n\in\mathscr{G}$ with $φ(n)\cap Q\neq\emptyset$, $n$ is marginal deterministic with respect to $Q$.
-    \end{mybox}
-    \begin{itemize}
-      \item Simple generalization of determinism
-      \item Structural property about the support of input units
-      \item Defined with respect to $Q$
-    \end{itemize}
+    % \begin{itemize}
+    %   \item Simple generalization of determinism
+    %   \item Structural property about the support of input units
+    %   \item Defined with respect to $Q$
+    % \end{itemize}
   \end{frame}
 
   \begin{frame}{Marginal Determinism: Example}
@@ -219,6 +263,7 @@
   \end{frame}
 
   \begin{frame}{Tractable Computation: Sum Units}
+    \onslide<2->
     \begin{minipage}[c]{0.49\textwidth}
       \begin{mybox}
         \begin{align*}
@@ -230,6 +275,7 @@
       \end{mybox}
     \end{minipage}
     \hfill
+    \onslide<1->
     \begin{minipage}[c]{0.49\textwidth}
       \center
       \includegraphics[scale=1.2]{figures/sum-unit.pdf}
@@ -238,45 +284,61 @@
 
 \section{Sufficient Conditions}
   \begin{frame}{Sufficient Conditions}
+    \onslide<+->
     \begin{mybox}
-      \textbf{Theorem:}
-      Let $\mathscr{G}$ be smooth, decomposable, and $Q$-marginal deterministic.
-      Then for any parameterization $ϑ$ the above algorithm
-      tractably computes MMAP queries of $\mathscr{C}$ over $Q$.
+      \raggedright
+      \textbf{Theorem:}\\[1em]
+      $\mathscr{G}$ be smooth, decomposable, and $Q$-marginal deterministic \\
+      $\quad\implies$ for any parameterization $ϑ$ \\
+      \hphantom{$\quad\implies$} the algorithm tractably computes MMAP queries of $\mathscr{C}$ over $Q$
     \end{mybox}
     \begin{itemize}
-      \item Proof by induction
-      \item Input units are correct by assumption
+      \item<+-> Proof by induction with root node $n\in\mathscr{G}$
+      \item<+-> Output of input units is correct by assumption
     \end{itemize}
+    \medskip
+
+    \onslide<+->
     \[
       \mathscr{Q}(e,\mathscr{I}) = \max_{q\in\val(Q)} \integral{\mathscr{I}}{}{\mathscr{C}(Z,q,e)}{Z}
     \]
   \end{frame}
 
   \begin{frame}{Sufficient Conditions: Product Units}
-    \begin{itemize}
-      \item<+-> Apply decomposability and partition $Z$, $Q$, and $E$
-    \end{itemize}
-    \begin{align*}
-      \uncover<+->{\mathscr{Q}(e,\mathscr{I}) &= \max_{q_1,\ldots,q_k\in\val(Q)} \integral{\mathscr{I}}{}{\prod_{i=1}^k\mathscr{C}_i(Z_i,q_i,e_i)}{Z} }\\
-      \uncover<+->{&= \max_{q_1,\ldots,q_k\in\val(Q)} \prod_{i=1}^k \integral{\mathscr{I}}{}{\mathscr{C}_i(Z_i,q_i,e_i)}{Z_i} }\\
-      \uncover<+->{&= \prod_{i=1}^k \max_{q_i\in\val(Q)} \integral{\mathscr{I}_i}{}{\mathscr{C}_i(Z_i,q_i,e_i)}{Z_i} }\\
-      \uncover<+->{&= \prod_{i=1}^k \mathscr{C}_i(e_i,\mathscr{I}_i) }
-    \end{align*}
+    \begin{minipage}[c]{0.75\textwidth}
+      \begin{itemize}
+        \item<+-> Apply decomposability and partition $Z$, $Q$, and $E$
+      \end{itemize}
+      \begin{align*}
+        \uncover<+->{\mathscr{Q}(e,\mathscr{I}) &= \max_{q_1,\ldots,q_k\in\val(Q)} \integral{\mathscr{I}}{}{\prod_{i=1}^k\mathscr{C}_i(Z_i,q_i,e_i)}{Z} }\\
+        \uncover<+->{&= \max_{q_1,\ldots,q_k\in\val(Q)} \prod_{i=1}^k \integral{\mathscr{I}}{}{\mathscr{C}_i(Z_i,q_i,e_i)}{Z_i} }\\
+        \uncover<+->{&= \prod_{i=1}^k \max_{q_i\in\val(Q)} \integral{\mathscr{I}_i}{}{\mathscr{C}_i(Z_i,q_i,e_i)}{Z_i} }\\
+        \uncover<+->{&= \prod_{i=1}^k \mathscr{C}_i(e_i,\mathscr{I}_i) }
+      \end{align*}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[c]{0.2\textwidth}
+      \includegraphics[scale=1.0]{figures/product-unit.pdf}
+    \end{minipage}
   \end{frame}
 
   \begin{frame}{Sufficient Conditions: Sum Units}
-    \begin{itemize}
-      \item<+-> Sum units with no query variable in their scope reduce to MAR queries which has alread been proven
-      \item<+-> So $φ(n)\cap Q \neq \emptyset$
-    \end{itemize}
-    \begin{align*}
-      \uncover<+->{\mathscr{Q}(e,\mathscr{I}) &= \max_{q\in\val(Q)} \integral{\mathscr{I}}{}{\sum_{i\in\nodein(n)} ϑ_i\mathscr{C}_i(Z,q,e)}{Z} }\\
-      \uncover<+->{&= \max_{q\in\val(Q)} \sum_{i\in\nodein(n)} \integral{\mathscr{I}}{}{ϑ_i\mathscr{C}_i(Z,q,e)}{Z} }\\
-      \uncover<+->{&= \max_{q\in\val(Q)} \max_{i\in\nodein(n)} \integral{\mathscr{I}}{}{ϑ_i\mathscr{C}_i(Z,q,e)}{Z} }\\
-      \uncover<+->{&= \max_{i\in\nodein(n)} ϑ_i \max_{q\in\val(Q)} \integral{\mathscr{I}}{}{\mathscr{C}_i(Z,q,e)}{Z} }\\
-      \uncover<+->{&= \max_{i\in\nodein(n)} ϑ_i \mathscr{Q}_i(e,\mathscr{I})}
-    \end{align*}
+    \begin{minipage}[c]{0.75\textwidth}
+      \begin{itemize}
+        \item<+-> Sum units with $φ(n)\cap Q = \emptyset$ reduce to MAR queries
+      \end{itemize}
+      \begin{align*}
+        \uncover<+->{\mathscr{Q}(e,\mathscr{I}) &= \max_{q\in\val(Q)} \integral{\mathscr{I}}{}{\sum_{i\in\nodein(n)} ϑ_i\mathscr{C}_i(Z,q,e)}{Z} }\\
+        \uncover<+->{&= \max_{q\in\val(Q)} \sum_{i\in\nodein(n)} \integral{\mathscr{I}}{}{ϑ_i\mathscr{C}_i(Z,q,e)}{Z} }\\
+        \uncover<+->{&= \max_{q\in\val(Q)} \max_{i\in\nodein(n)} \integral{\mathscr{I}}{}{ϑ_i\mathscr{C}_i(Z,q,e)}{Z} }\\
+        \uncover<+->{&= \max_{i\in\nodein(n)} ϑ_i \max_{q\in\val(Q)} \integral{\mathscr{I}}{}{\mathscr{C}_i(Z,q,e)}{Z} }\\
+        \uncover<+->{&= \max_{i\in\nodein(n)} ϑ_i \mathscr{Q}_i(e,\mathscr{I})}
+      \end{align*}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[c]{0.2\textwidth}
+      \includegraphics[scale=1.0]{figures/sum-unit.pdf}
+    \end{minipage}
   \end{frame}
 
 \section{Conclusions}
@@ -284,8 +346,9 @@
     \begin{itemize}
       \item<+-> MMAP queries are typically be NP-hard
       \item<+-> Complexity depends on set of query variables
-      \item<+-> marginal determinism together with smoothness and decomposability seems to be sufficient for tractable computations
-      \item<+-> sum units have to compute maxima when support contains query variables
+      \item<+-> Marginal determinism, smoothness, and decomposability \\
+        are sufficient but strong conditions for tractable computation
+      \item<+-> Sum units compute maxima if support contains query variables
     \end{itemize}
   \end{frame}
 
@@ -306,7 +369,7 @@
     \begin{minipage}[c]{0.49\textwidth}
       \begin{itemize}
         \item<+-> Marginal determinism for all sets of query variables
-        \item<+-> Sum-maximizer circuits (no general algorithm)
+        \item<+-> Sum-maximizer circuits
         \item<+-> Tractable computation of information-theoretic measures
       \end{itemize}
     \end{minipage}
